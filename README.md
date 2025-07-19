@@ -20,27 +20,59 @@ A comprehensive, interactive quiz game built in Python that allows users to test
 - **Data Persistence**: Scores and questions saved automatically
 - **Import/Export**: Backup and share question databases
 
+### Web Interface Features
+- **Modern UI**: Beautiful, responsive design with smooth animations
+- **Real-time Progress**: Live progress tracking and scoring
+- **Interactive Dashboard**: Comprehensive admin panel for question management
+- **Leaderboard**: Visual ranking system with gold/silver/bronze medals
+- **Keyboard Shortcuts**: Navigate efficiently with keyboard controls
+- **Mobile Friendly**: Fully responsive design for all devices
+
 ## 📁 Project Structure
 
 ```
 quiz-game/
-├── quiz_game.py          # Main game application
-├── question_manager.py   # Question database management tool
+├── app.py                # Flask web application
+├── quiz_game.py          # Main game application (CLI)
+├── question_manager.py   # Question database management tool (CLI)
 ├── questions.json        # Question database (auto-generated)
 ├── high_scores.json      # High scores leaderboard (auto-generated)
+├── requirements.txt      # Python dependencies
+├── templates/
+│   └── index.html       # Main web interface template
+├── static/
+│   ├── css/
+│   │   └── style.css    # Modern responsive styles
+│   └── js/
+│       └── script.js    # Interactive JavaScript functionality
 └── README.md            # This file
 ```
 
 ## 🚀 Quick Start
 
-### Running the Quiz Game
-```bash
-python quiz_game.py
-```
+### Option 1: Web Interface (Recommended)
+1. **Install Dependencies:**
+   ```bash
+   pip3 install -r requirements.txt
+   ```
 
-### Managing Questions
+2. **Start the Web Server:**
+   ```bash
+   python3 app.py
+   ```
+
+3. **Open in Browser:**
+   ```
+   http://localhost:5000
+   ```
+
+### Option 2: Command Line Interface
 ```bash
-python question_manager.py
+# Play the quiz game
+python3 quiz_game.py
+
+# Manage questions
+python3 question_manager.py
 ```
 
 ## 🎮 How to Play

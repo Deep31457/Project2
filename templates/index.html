@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Ultimate Quiz Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🎯 Ultimate Quiz Game</h1>
+            <p class="subtitle">Test your knowledge across multiple categories and difficulty levels!</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="home">🏠 Home</button>
+            <button class="nav-tab" data-tab="quiz">🎮 Quiz</button>
+            <button class="nav-tab" data-tab="leaderboard">🏆 Leaderboard</button>
+            <button class="nav-tab" data-tab="admin">⚙️ Admin</button>
+        </nav>
+
+        <!-- Home Tab -->
+        <div class="tab-content active" id="home-tab">
+            <div class="welcome-section">
+                <div class="welcome-card">
+                    <h2>🌟 Welcome to the Ultimate Quiz Experience!</h2>
+                    <p>Challenge yourself with questions from multiple categories including Science, History, Mathematics, Sports, and General Knowledge.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-brain"></i>
+                            <h3>Multiple Categories</h3>
+                            <p>Science, History, Math, Sports & more</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Difficulty Levels</h3>
+                            <p>Easy, Medium, Hard & Mixed challenges</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-trophy"></i>
+                            <h3>Scoring System</h3>
+                            <p>Points-based scoring with performance grades</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Learn & Improve</h3>
+                            <p>Detailed explanations for each answer</p>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-large" id="start-quiz-btn">
+                        <i class="fas fa-play"></i> Start Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Tab -->
+        <div class="tab-content" id="quiz-tab">
+            <!-- Quiz Setup -->
+            <div class="quiz-section" id="quiz-setup">
+                <div class="setup-card">
+                    <h2>🎮 Quiz Setup</h2>
+                    <form id="quiz-form">
+                        <div class="form-group">
+                            <label for="player-name">👤 Your Name:</label>
+                            <input type="text" id="player-name" placeholder="Enter your name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">📚 Category:</label>
+                            <select id="category" required>
+                                <option value="">Loading categories...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="difficulty">⚡ Difficulty:</label>
+                            <select id="difficulty" required>
+                                <option value="mixed">🌈 Mixed (All difficulties)</option>
+                                <option value="easy">🟢 Easy (1 point each)</option>
+                                <option value="medium">🟡 Medium (2 points each)</option>
+                                <option value="hard">🔴 Hard (3 points each)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="num-questions">🔢 Number of Questions:</label>
+                            <input type="range" id="num-questions" min="5" max="50" value="10" step="5">
+                            <div class="range-value">10 questions</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i> Launch Quiz
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Quiz Playing -->
+            <div class="quiz-section hidden" id="quiz-playing">
+                <div class="quiz-header">
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="question-counter">Question 1 of 10</span>
+                    </div>
+                    <div class="quiz-score">
+                        <span class="score">Score: 0</span>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-number">Question 1</div>
+                    <h3 class="question-text">Loading question...</h3>
+                    <div class="options-container">
+                        <!-- Options will be populated dynamically -->
+                    </div>
+                    <button class="btn btn-secondary hidden" id="next-question-btn">
+                        <i class="fas fa-arrow-right"></i> Next Question
+                    </button>
+                    <button class="btn btn-primary hidden" id="finish-quiz-btn">
+                        <i class="fas fa-flag-checkered"></i> Finish Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Results -->
+            <div class="quiz-section hidden" id="quiz-results">
+                <div class="results-card">
+                    <div class="results-header">
+                        <h2>🏆 Quiz Completed!</h2>
+                        <div class="grade-display">
+                            <span class="grade">A+</span>
+                            <span class="grade-emoji">🌟</span>
+                        </div>
+                    </div>
+
+                    <div class="results-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-score"></i>
+                            <span class="stat-label">Final Score</span>
+                            <span class="stat-value" id="final-score">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span class="stat-label">Correct Answers</span>
+                            <span class="stat-value" id="correct-answers">0/0</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-percentage"></i>
+                            <span class="stat-label">Accuracy</span>
+                            <span class="stat-value" id="accuracy">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="grade-message">
+                        <p id="grade-message">Outstanding! You're a quiz master!</p>
+                    </div>
+
+                    <div class="results-actions">
+                        <button class="btn btn-primary" id="new-quiz-btn">
+                            <i class="fas fa-redo"></i> Take Another Quiz
+                        </button>
+                        <button class="btn btn-secondary" id="view-details-btn">
+                            <i class="fas fa-list"></i> View Detailed Results
+                        </button>
+                    </div>
+
+                    <!-- Detailed Results -->
+                    <div class="detailed-results hidden" id="detailed-results">
+                        <h3>📋 Question-by-Question Review</h3>
+                        <div class="results-list">
+                            <!-- Detailed results will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Tab -->
+        <div class="tab-content" id="leaderboard-tab">
+            <div class="leaderboard-section">
+                <h2>🏆 High Scores Leaderboard</h2>
+                <div class="leaderboard-card">
+                    <div class="leaderboard-header">
+                        <span>Rank</span>
+                        <span>Player</span>
+                        <span>Score</span>
+                        <span>Accuracy</span>
+                        <span>Category</span>
+                        <span>Difficulty</span>
+                        <span>Date</span>
+                    </div>
+                    <div class="leaderboard-body" id="leaderboard-body">
+                        <div class="loading">Loading leaderboard...</div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="refresh-leaderboard-btn">
+                    <i class="fas fa-sync"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Tab -->
+        <div class="tab-content" id="admin-tab">
+            <div class="admin-section">
+                <h2>⚙️ Question Management</h2>
+                
+                <!-- Stats Dashboard -->
+                <div class="stats-dashboard">
+                    <div class="stat-card">
+                        <i class="fas fa-question-circle"></i>
+                        <h3 id="total-questions">0</h3>
+                        <p>Total Questions</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-folder"></i>
+                        <h3 id="total-categories">0</h3>
+                        <p>Categories</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3 id="avg-per-category">0</h3>
+                        <p>Avg per Category</p>
+                    </div>
+                </div>
+
+                <!-- Add Question Form -->
+                <div class="admin-card">
+                    <h3>➕ Add New Question</h3>
+                    <form id="add-question-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="admin-category">Category:</label>
+                                <select id="admin-category" required>
+                                    <option value="">Select category</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="admin-difficulty">Difficulty:</label>
+                                <select id="admin-difficulty" required>
+                                    <option value="easy">Easy</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="hard">Hard</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="admin-question">Question:</label>
+                            <textarea id="admin-question" placeholder="Enter your question here..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Answer Options:</label>
+                            <div class="options-grid">
+                                <input type="text" id="option-0" placeholder="Option A" required>
+                                <input type="text" id="option-1" placeholder="Option B" required>
+                                <input type="text" id="option-2" placeholder="Option C" required>
+                                <input type="text" id="option-3" placeholder="Option D" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="correct-answer">Correct Answer:</label>
+                            <select id="correct-answer" required>
+                                <option value="0">A</option>
+                                <option value="1">B</option>
+                                <option value="2">C</option>
+                                <option value="3">D</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="admin-explanation">Explanation (optional):</label>
+                            <textarea id="admin-explanation" placeholder="Explain why this answer is correct..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Question
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Questions List -->
+                <div class="admin-card">
+                    <h3>📋 Existing Questions</h3>
+                    <div class="questions-filters">
+                        <select id="filter-category">
+                            <option value="">All Categories</option>
+                        </select>
+                        <select id="filter-difficulty">
+                            <option value="">All Difficulties</option>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="questions-list" id="questions-list">
+                        <div class="loading">Loading questions...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification hidden" id="notification">
+        <span class="notification-text"></span>
+        <button class="notification-close">&times;</button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
